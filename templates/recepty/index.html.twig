@@ -3,5 +3,29 @@
 {% block title %}recepty{% endblock %}
 
 {% block body %}
-    <h2>recepty</h2>
+    <div class="d-flex align-items-center justify-content-between mb-1">
+        <h3>Recepty</h3>
+        <a href="{{ path('app_recepty') }}" class="btn btn-primary fw-bold primary">+</a>
+    </div>
+
+    {% for category, types in groupedRecepty %}
+        <div class="mb-4">
+            <h5 class="p-1 ps-2">{{ category }}</h5>
+
+            {% for type, recepts in types %}
+                {% if type != 'null' %}
+                    <h6 class="ps-3">{{ type }}</h6>
+                {% endif %}
+
+                <ul>
+                    {% for recept in recepts %}
+                        <li>
+                            {{ recept.title }} – na {{ recept.days ?? 'n/a' }}
+                            {{ (recept.days > 1) ? 'dni' : 'deň' }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </div>
+    {% endfor %}
 {% endblock %}
