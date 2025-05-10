@@ -11,8 +11,6 @@ final class ReceptyController extends AbstractController
     #[Route('/recepty', name: 'app_recepty')]
     public function index(): Response
     {
-        return $this->render('recepty/index.html.twig', [
-            'controller_name' => 'ReceptyController',
-        ]);
+        return $this->render('recepty/index.html.twig', []);
     }
 }
