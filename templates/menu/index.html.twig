@@ -1,7 +1,45 @@
+{# templates/menu/index.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}menu{% endblock %}
+{% block title %}Týždenné meňu{% endblock %}
 
 {% block body %}
-    <h2>menu</h2>
+    <div class="d-flex align-items-center justify-content-between mb-2">
+        <h3>Týždenné meňu</h3>
+        <div>
+            <a href="{{ path('app_menu_generate') }}" class="btn primary me-2">
+                <i class="fa-solid fa-rotate-right"></i>
+            </a>
+            <a href="{{ path('app_menu_pdf') }}" class="btn primary fw-bold">
+                <i class="fa-solid fa-file-export"></i> Export PDF
+            </a>
+        </div>
+    </div>
+
+    <div class="weekdays mb-4">
+        <ul class="list-unstyled">
+            {% for item in weekdays %}
+                <li>
+                    <div><strong>{{ item.day }}:</strong></div>
+                    {{ item.meal.title }} ({{ item.meal.category }})
+                    {% if item.meal.type %}- {{ item.meal.type }}{% endif %}
+                    - {{ item.meal.days }} {{ item.meal.days > 1 ? 'dni' : 'deň' }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="weekend">
+        <h5>Víkend</h5>
+        <ul class="list-unstyled">
+            {% for item in weekend %}
+                <li>
+                    <div><strong>{{ item.day }}:</strong></div>
+                    {{ item.meal.title }} ({{ item.meal.category }})
+                    {% if item.meal.type %}- {{ item.meal.type }}{% endif %}
+                    - {{ item.meal.days }} {{ item.meal.days > 1 ? 'dni' : 'deň' }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}

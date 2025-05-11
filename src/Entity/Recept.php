@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Recept
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -30,6 +30,13 @@ class Recept
 
     #[ORM\Column(nullable: true)]
     private ?int $days = null;
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable();
+        $this->uuid = \Symfony\Component\Uid\Uuid::v4()->toRfc4122();
+        $this->category = 'masko';
+    }
 
     public function getId(): ?int
     {
