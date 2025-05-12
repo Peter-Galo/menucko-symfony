@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nový recept{% endblock %}
+
+{% block body %}
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h3>Nový recept</h3>
+        <a href="{{ path('app_recepty_index') }}" class="btn btn-primary primary">Recepty</a>
+    </div>
+
+    {{ form_start(form) }}
+
+    <div class="mb-3">
+        {{ form_label(form.title, null, { label_attr: { class: 'form-label' } }) }}
+        <span class="text-danger d-none" id="error-title">*Čo to bude?</span>
+        {{ form_widget(form.title, {
+            attr: {
+                class: 'form-control no-outline rounded-0 border-0 mb-2',
+                id: 'recept_title'
+            }
+        }) }}
+
+        {{ form_label(form.days, null, { label_attr: { class: 'form-label' } }) }}
+        <span class="text-danger d-none" id="error-days">*Na koľko dní?</span>
+        {{ form_widget(form.days, {
+            attr: {
+                class: 'form-control no-outline rounded-0 border-0',
+                id: 'recept_days',
+                min: 1
+            }
+        }) }}
+    </div>
+
+    <div class="d-flex align-items-center flex-wrap gap-3 mb-0" id="radio-wrapper">
+        <div class="d-flex align-items-center gap-2" id="category-wrapper">
+            {% for choice in form.category %}
+                <div class="form-check form-check-inline m-0">
+                    {{ form_widget(choice, { attr: { class: 'form-check-input' } }) }}
+                    {{ form_label(choice, null, { label_attr: { class: 'form-check-label' } }) }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="d-none align-items-center gap-2" id="type-wrapper">
+            {% for choice in form.type %}
+                <div class="form-check form-check-inline m-0">
+                    {{ form_widget(choice, { attr: { class: 'form-check-input' } }) }}
+                    {{ form_label(choice, null, { label_attr: { class: 'form-check-label' } }) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <button type="submit" id="submit-btn" class="btn bg-primary-subtle w-100 mt-3 rounded-0" disabled>
+        Šup ho tam
+    </button>
+
+    {{ form_end(form) }}
+
+    <script>
+      document.addEventListener('turbo:load', () => {
+        const form = document.querySelector('form');
+        const titleInput = document.getElementById('recept_title');
+        const daysInput = document.getElementById('recept_days');
+        const titleError = document.getElementById('error-title');
+        const daysError = document.getElementById('error-days');
+        const submitBtn = document.getElementById('submit-btn');
+        const typeWrapper = document.getElementById('type-wrapper');
+        const categoryRadios = document.querySelectorAll('input[name="recept[category]"]');
+
+        if (!form || !submitBtn) return;
+
+        // === Toggle visibility of the "type" radio group if category === "veg"
+        function updateTypeVisibility() {
+          const selectedCategory = form.querySelector('input[name="recept[category]"]:checked')?.value;
+          const showType = selectedCategory === 'veg';
+
+          typeWrapper.classList.toggle('d-flex', showType);
+          typeWrapper.classList.toggle('d-none', !showType);
+        }
+
+        // === Show or hide validation errors for empty fields
+        function showValidationError(input, errorElement) {
+          const isValid = input.value.trim().length > 0;
+          errorElement.classList.toggle('d-none', isValid);
+          return isValid;
+        }
+
+        // === Enable the submit button only when required fields are valid
+        function updateSubmitState() {
+          const isTitleValid = titleInput.value.trim() !== '';
+          const isDaysValid = daysInput.value.trim() !== '';
+          submitBtn.disabled = !(isTitleValid && isDaysValid);
+        }
+
+        // === Attach events to inputs
+        [titleInput, daysInput].forEach((input) => {
+          input.addEventListener('input', () => {
+            const error = input === titleInput ? titleError : daysError;
+            showValidationError(input, error);
+            updateSubmitState();
+          });
+
+          input.addEventListener('blur', () => {
+            const error = input === titleInput ? titleError : daysError;
+            showValidationError(input, error);
+          });
+        });
+
+        // === Form submission validation
+        form.addEventListener('submit', (e) => {
+          const titleOk = showValidationError(titleInput, titleError);
+          const daysOk = showValidationError(daysInput, daysError);
+          if (!titleOk || !daysOk) e.preventDefault();
+        });
+
+        // === Category radio change
+        categoryRadios.forEach(radio => {
+          radio.addEventListener('change', updateTypeVisibility);
+        });
+
+        // Initial setup
+        updateTypeVisibility();
+        updateSubmitState();
+      });
+    </script>
+{% endblock %}

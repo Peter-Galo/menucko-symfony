@@ -5,7 +5,7 @@
 {% block body %}
     <div class="d-flex align-items-center justify-content-between mb-1">
         <h3>Recepty</h3>
-        <a href="{{ path('app_recepty') }}" class="btn btn-primary fw-bold primary">+</a>
+        <a href="{{ path('app_recepty_add') }}" class="btn btn-primary fw-bold primary">+</a>
     </div>
 
     {% for category, types in groupedRecepty %}
