@@ -13,6 +13,6 @@ class RedirectController extends AbstractController
     public function redirectToMenu(): RedirectResponse
     {
         // Redirect all invalid or empty routes to the 'menu' route
-        return new RedirectResponse($this->generateUrl('app_menu'));
+        return new RedirectResponse($this->generateUrl('app_menu_index'));
     }
 }
