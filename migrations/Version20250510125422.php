@@ -61,9 +61,6 @@ final class Version20250510125422 extends AbstractMigration
         $this->addSql(<<<'SQL'
             CREATE TRIGGER notify_trigger AFTER INSERT OR UPDATE ON messenger_messages FOR EACH ROW EXECUTE PROCEDURE notify_messenger_messages();
         SQL);
-        $this->addSql(<<<'SQL'
-            DROP TABLE recepty
-        SQL);
     }
 
     public function down(Schema $schema): void
