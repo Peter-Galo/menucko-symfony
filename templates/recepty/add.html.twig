@@ -34,20 +34,22 @@
     <div class="d-flex align-items-center flex-wrap gap-3 mb-0" id="radio-wrapper">
         <div class="d-flex align-items-center gap-2" id="category-wrapper">
             {% for choice in form.category %}
-                <div class="form-check form-check-inline m-0">
-                    {{ form_widget(choice, { attr: { class: 'form-check-input' } }) }}
-                    {{ form_label(choice, null, { label_attr: { class: 'form-check-label' } }) }}
-                </div>
+                <label class="form-check form-check-inline m-0 align-items-center">
+                    {{ form_widget(choice, { attr: { class: 'form-check-input me-2' } }) }}
+                    {{ form_label(choice, null, { label_attr: { class: 'form-check-label m-0' } }) }}
+                </label>
             {% endfor %}
+
         </div>
 
         <div class="d-none align-items-center gap-2" id="type-wrapper">
             {% for choice in form.type %}
-                <div class="form-check form-check-inline m-0">
-                    {{ form_widget(choice, { attr: { class: 'form-check-input' } }) }}
-                    {{ form_label(choice, null, { label_attr: { class: 'form-check-label' } }) }}
-                </div>
+                <label class="form-check form-check-inline m-0 align-items-center">
+                    {{ form_widget(choice, { attr: { class: 'form-check-input me-2' } }) }}
+                    {{ form_label(choice, null, { label_attr: { class: 'form-check-label m-0' } }) }}
+                </label>
             {% endfor %}
+
         </div>
     </div>
 
